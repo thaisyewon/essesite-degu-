@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Esse site é de Guê?</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background-color: #fff5f8;
+      margin: 0;
+      padding: 20px;
+      color: #4d2c3d;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2.5em;
+    }
+    .diary-entry {
+      background: #ffeef2;
+      border: 2px dashed #ffb6c1;
+      border-radius: 15px;
+      padding: 15px;
+      margin: 20px 0;
+    }
+    textarea {
+      width: 100%;
+      height: 100px;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+    }
+    button {
+      background-color: #ff7fa0;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #e86791;
+    }
+    input[type="file"] {
+      margin-top: 10px;
+    }
+    img {
+      max-width: 100%;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Esse site é de Guê?</h1>
+
+  <div>
+    <textarea id="textEntry" placeholder="Escreva aqui sua memória, pensamento ou desabafo..."></textarea><br />
+    <input type="file" id="photoUpload" accept="image/*" /><br />
+    <button onclick="addEntry()">Salvar no diário</button>
+  </div>
+
+  <div id="entries"></div>
+
+  <script>
+    function addEntry() {
+      const text = document.getElementById("textEntry").value;
+      const photoInput = document.getElementById("photoUpload");
+
+      if (!text && !photoInput.files.length) return;
+
+      const entryDiv = document.createElement("div");
+      entryDiv.className = "diary-entry";
+
+      if (text) {
+        const textP = document.createElement("p");
+        textP.textContent = text;
+        entryDiv.appendChild(textP);
+      }
+
+      if (photoInput.files.length) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const img = document.createElement("img");
+          img.src = e.target.result;
+          entryDiv.appendChild(img);
+        };
+        reader.readAsDataURL(photoInput.files[0]);
+      }
+
+      document.getElementById("entries").prepend(entryDiv);
+
+      document.getElementById("textEntry").value = "";
+      document.getElementById("photoUpload").value = "";
+    }
+  </script>
+</body>
+</html>
